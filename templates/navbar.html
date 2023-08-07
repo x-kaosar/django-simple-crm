@@ -1,14 +1,21 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="{% url 'dashboard' %}">Dashboard</a>
+    <a class="navbar-brand" href="{% url 'dashboard' %}">Kawsar Ahmed</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
   
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
+        {% if request.user.is_staff %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+        </li>
+
         <li class="nav-item">
           <a class="nav-link" href="{% url 'product' %}">Product</a>
         </li>
+
+        {% endif %}
         {% if request.user.is_authenticated %}
         <li class="nav-item">
           <span class="nav-link">Hello, {{ request.user }}</span>
