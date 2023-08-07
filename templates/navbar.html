@@ -9,6 +9,16 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'product' %}">Product</a>
         </li>
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          <span class="nav-link">Hello, {{ request.user }}</span>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
+
+        {% else %}
 
         <li class="nav-item">
           <a class="nav-link" href="{% url 'login' %}">Login</a>
@@ -17,5 +27,6 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'signup' %}">Signup</a>
         </li>
+        {% endif %}
     </div>
   </nav>
