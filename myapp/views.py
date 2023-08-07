@@ -4,9 +4,10 @@ from . models import Product,Order,Customer
 from .filters import OrderFilter
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 from django.contrib import messages
 from .forms import OrderForm, CreateUserForm
-from .decorators import unauthenticate_user
+from .decorators import unauthenticate_user,allowerd_users,admin_only
 
 
 
@@ -17,6 +18,7 @@ def base(request):
 
 
 @login_required(login_url='login')
+@admin_only
 def dashboard(request):
     orders        = Order.objects.all()
     customers     = Customer.objects.all()
@@ -37,6 +39,7 @@ def dashboard(request):
     return render(request, 'accounts/dashboard.html',context)
 
 @login_required(login_url='login')
+@allowerd_users(allowed_roles=['admin'])
 def product(request):
     product = Product.objects.all()
     context = {'products':product}
@@ -44,6 +47,7 @@ def product(request):
 
 
 @login_required(login_url='login')
+@allowerd_users(allowed_roles=['admin'])
 def customer(request,id):
     customer = Customer.objects.get(id=id)
 
@@ -58,6 +62,7 @@ def customer(request,id):
 
 
 @login_required(login_url='login')
+@allowerd_users(allowed_roles=['admin'])
 def createOrder(request):
     form = OrderForm()
 
@@ -71,6 +76,7 @@ def createOrder(request):
     return render(request, 'accounts/order_create.html',context)
 
 @login_required(login_url='login')
+@allowerd_users(allowed_roles=['admin'])
 def updateOrder(request, id):
     order = Order.objects.get(id=id)
     form = OrderForm(instance=order)
@@ -86,6 +92,7 @@ def updateOrder(request, id):
     return render(request, 'accounts/order_create.html',context)
 
 @login_required(login_url='login')
+@allowerd_users(allowed_roles=['admin'])
 def deleteOrder(request,id):
     order = Order.objects.get(id=id)
     if request.method == "POST":
@@ -116,9 +123,13 @@ def signUpPage(request):
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            form.save()
-            user = form.cleaned_data.get('username')
-            messages.success(request, 'User is created for '+user)
+            user = form.save()
+            username = form.cleaned_data.get('username')
+
+            group = Group.objects.get(name='customer')
+            user.groups.add(group)
+
+            messages.success(request, 'User is created for '+username)
             return redirect('login')
     context = {'form':form}
     return render(request, 'auth/signup.html', context)
