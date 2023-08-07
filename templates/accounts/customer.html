@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+Customer
+{% endblock %}
+
+
+
+{% block body %}
+
+<br>
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Customer: {{ customer.name }}</h5>
+            <hr>
+            <a href="" class="btn btn-outline-info btn-sm btn-block">Update</a>
+            <a href="" class="btn btn-outline-danger btn-sm btn-block">Remove</a>
+        </div>
+    </div>
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Information:</h5>
+            <hr>
+            <p>Phone :{{ customer.phone }}</p>
+            <p>Email : {{ customer.email }}</p>
+        </div>
+    </div>
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Total Order</h5>
+            <hr>
+            <h1 style="text-align: center; padding: 10px;">{{ orders.count }}</h1>
+        </div>
+    </div>
+</div>
+
+<br>
+<div class="row">
+    <div class="col">
+        <div class="card card-body">
+            <form method="get">
+                {{ orderFilter.form | crispy }}
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<br>
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <table class="table table-sm">
+                <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Note</th>
+                    <th>Date Ordered</th>
+                    <th>Status</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.product.name }}</td>
+                    <td>{{ order.product.category }}</td>
+                    <td>{{ order.note }}</td>
+                    <td>{{ order.date_created }}</td>
+                    <td>{{ order.status }}</td>
+                    <td><a href="{% url 'update_order' order.id %}" class="btn btn-outline-info btn-sm btn-block">Update</a></td>
+                    <td><a href="{% url 'delete_order' order.id %}" class="btn btn-outline-danger btn-sm btn-block">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
