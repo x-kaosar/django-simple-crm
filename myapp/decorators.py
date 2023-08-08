@@ -23,7 +23,7 @@ def allowerd_users(allowed_roles=[]):
             if group in allowed_roles:
                 return view_func(request, *args, **kwargs)
             else:
-                return HttpResponse("You are not authorized to view this page")
+                return render(request, 'accounts/notallow.html')
         return wrapper_func
     return dacorator
 
