@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.contrib import messages
-from .forms import OrderForm, CreateUserForm
+from .forms import OrderForm, CreateUserForm,CustomerForm
 from .decorators import unauthenticate_user,allowerd_users,admin_only
 
 
@@ -155,4 +155,19 @@ def userPage(request):
         }
     return render(request, 'accounts/user.html', context)
 
+@login_required(login_url='login')
+@allowerd_users(allowed_roles=['customer'])
+def userSetting(request):
+    customer = request.user.customer
+    form = CustomerForm(instance=customer)
+
+    if request.method == "POST":
+        form = CustomerForm(request.POST,request.FILES, instance=customer)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile Updated!')
+            
+
+    context ={'form':form}
+    return render(request,'accounts/account_setting.html', context)
 

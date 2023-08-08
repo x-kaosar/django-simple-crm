@@ -11,6 +11,7 @@ urlpatterns = [
 
 
     path('user/', views.userPage, name='user'),
+    path('settings/', views.userSetting, name='setting'),
     path('', views.dashboard, name='dashboard'),
     path('product/', views.product, name='product'),
     path('customer/<int:id>/', views.customer, name="customer"),
