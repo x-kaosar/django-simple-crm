@@ -127,9 +127,9 @@ def signUpPage(request):
             username = form.cleaned_data.get('username')
             email = form.cleaned_data.get('email')
 
-            group = Group.objects.get(name='customer')
-            user.groups.add(group)
-            Customer.objects.create(user=user,name=username,email=email)
+            # group = Group.objects.get(name='customer')
+            # user.groups.add(group)
+            # Customer.objects.create(user=user,name=username,email=email)
 
             messages.success(request, 'User is created for '+username)
             return redirect('login')

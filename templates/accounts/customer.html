@@ -16,6 +16,10 @@ Customer
         <div class="card card-body">
             <h5>Customer: {{ customer.name }}</h5>
             <hr>
+            <div class="card card-body">
+                <img class="profile-pic" src="{{ customer.profile_pic.url }}">
+            </div>
+            <hr>
             <a href="" class="btn btn-outline-info btn-sm btn-block">Update</a>
             <a href="" class="btn btn-outline-danger btn-sm btn-block">Remove</a>
         </div>
